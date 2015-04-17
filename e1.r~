@@ -13,9 +13,12 @@ plot(perf, col="blue")
 abline(0,1,col="grey")
 abline(1,-1,col="red")
 
-df <- with(attributes(pred), data.frame(cutoffs=cutoffs[[1]], tp=tp[[1]], fn=fn[[1]], tn=tn[[1]], fp=fp[[1]], TMR=tp[[1]]/(tp[[1]]+fn[[1]]), TNMR=tn[[1]]/(tn[[1]]+fp[[1]])))
+dev.off()
+
+df <- with(attributes(pred), data.frame(tp=tp[[1]], fn=fn[[1]], tn=tn[[1]], fp=fp[[1]], TMR=tp[[1]]/(tp[[1]]+fn[[1]]), TNMR=tn[[1]]/(tn[[1]]+fp[[1]])))
+
 
 i_eer <- with(df, which.min(abs(TMR-TNMR)))
 EER <- with(df[i_eer,], mean(c(TMR,TNMR)))
 
-print(EER)
+print(i_eer)

@@ -15,7 +15,8 @@ abline(1,-1,col="red")
 
 dev.off()
 
-df <- with(attributes(pred), data.frame(cutoffs=cutoffs[[1]], tp=tp[[1]], fn=fn[[1]], tn=tn[[1]], fp=fp[[1]], TMR=tp[[1]]/(tp[[1]]+fn[[1]]), TNMR=tn[[1]]/(tn[[1]]+fp[[1]])))
+df <- with(attributes(pred), data.frame(tp=tp[[1]], fn=fn[[1]], tn=tn[[1]], fp=fp[[1]], TMR=tp[[1]]/(tp[[1]]+fn[[1]]), TNMR=tn[[1]]/(tn[[1]]+fp[[1]])))
+
 
 i_eer <- with(df, which.min(abs(TMR-TNMR)))
 EER <- with(df[i_eer,], mean(c(TMR,TNMR)))
