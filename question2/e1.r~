@@ -1,37 +1,39 @@
 require("MMSec")
-require("MASS")
-
 setwd("/home/martin/Projects/MMSec2/question2")
 
 img1 <- load.png("Img7.png")
-#m1 <- img1$grey
+m = 255 * as.matrix.greymap(img1)
+hist <- matrix(0,256,1)
 
-m = 256 * as.matrix.greymap(img1)
-h = truehist(m, breaks=256)
+# Histogram
+png(filename="Hist7.png")
+h = hist(m, breaks=256)
+dev.off()
 
+# Count occurences of each color
+for (i in 1:ncol(m)) {
+	for (j in 1:nrow(m)) {
+		#Colors from 1 to 256, to make it simpler for indexing
+		color = m[i,j] + 1
+		hist[color] <- hist[color] + 1
+	}
+}
+
+# Chi-Square
 x = 0
 
-print(h)
-
 for (i in 0:127) {
-	value1 = 0
-	value2 = 0
+	# Calculate Chi-Square
+	y1 = hist[2*i+1]
+	y2 = hist[2*i+2]
 
-	print(dim(h$breaks))
-	for (j in 1:dim(h$breaks)) {
-		if (h$breaks[j] == (2*i)) {
-			value1 = h$counts[j]
-		}
+	e = (y1 + y2)/2
 
-		if (h$breaks[j] == (2*i+1)) {
-			value2 = h$counts[j]
-		}
-		
+	if (e == 0) {
+		next
 	}
 
-	e = (value1 + value2)/2
-	x = x + ((value2 - e)^2 / e)
+	x = x + ((y2 - e)^2 / e)
 }
 
 print(x)
-
